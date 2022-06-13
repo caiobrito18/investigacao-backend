@@ -9,9 +9,6 @@ const FileModel = conn.model('Files',fileSchema);
 function CreateFile(req){
   FileModel.create({
     blob:req.blob,
-    tags:req.tags,
-    modDate:new Date(),
-    
   }, (err)=>{
     if(err){
       console.log(err)
