@@ -1,15 +1,7 @@
 {
   "_id":"mongoId",
   "innerId":"Number",
-  "blob":{
-    "lastModified": "Number",
-    "lastModifiedDate": "Date",
-    "name": "String",
-    "size": "Number",
-    "type": "String/filetype",
-    "webkitRelativePath": ""
-  },
-  "CS":"String",
+  "file64":"String",
   "Client":"String",
   "tags":{
     "Strings":"Strings"

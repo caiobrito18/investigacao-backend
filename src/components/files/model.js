@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-const objectId = mongoose.objectId;
+const ObjectId = Schema.ObjectId;
 
-const fileSchema = new Schema({
-  id:objectId,
-  blob:Blob,
-  tags:Array
+const FileSchema = new Schema({
+  id:ObjectId,
+  file64:String,
+  client:String,
+  tags:[]
 })
+
+module.exports = FileSchema;

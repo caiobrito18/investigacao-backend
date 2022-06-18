@@ -1,19 +1,20 @@
 const mongoose= require('mongoose')
-const fileSchema = require('./model')
+const FileSchema = require('./model')
 
 require('dotenv').config()
 
 const conn = mongoose.createConnection(process.env.MONGO_ACCESS)
-const FileModel = conn.model('Files',fileSchema);  
-
+const FileModel = conn.model('files',FileSchema); 
 function CreateFile(req){
-  FileModel.create({
-    blob:req.blob,
-  }, (err)=>{
-    if(err){
-      console.log(err)
-    }
+  console.log(req);
+  const FileDoc = new FileModel({
+  file64:req.file64,
+  client:req.client,
+  tags:req.tags
   })
+  FileDoc.save();
+  const created = FileDoc;
+  return created;
 }
 
 
