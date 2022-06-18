@@ -23,4 +23,14 @@ module.exports = {
     const fileList = await FileModel.find();
     return fileList;
   },
+  fileProvider: async function provide(req) {
+    console.log(req);
+    if (req.tags != undefined) {
+      const taggedpdf = await FileModel.find({ tags: { $all: req.tags } });
+      return taggedpdf;
+    } else {
+      const clientpdf = await FileModel.find({ client: req.client });
+      return clientpdf;
+    }
+  },
 };
