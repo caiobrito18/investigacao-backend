@@ -1,13 +1,32 @@
 const express = require("express");
-const controller = require("./controller");
+const multer = require("multer");
+const multerConfig = require("../../config/multer");
+const File = require("./model");
 const router = express.Router();
 
 // upload
-router.post("/upload", async (req, res, next) => {
-  await controller.create(req.body);
-  res.status(201).send(req.body);
-  next();
-});
+router.post(
+  "/upload",
+  multer(multerConfig).single("pdf"),
+  async (req, res, next) => {
+    const { originalname: name, size, key, location: url = "" } = req.file;
+    let { client, tags } = req.body;
+    tags = tags.split(" ");
+    const file = await File.create({
+      name,
+      tags,
+      client,
+      size,
+      key,
+      url,
+    });
+
+    return res.json(file);
+    // console.log(req.body);
+    // res.status(201).json(req.files);
+    // next();
+  }
+);
 
 // listing
 router.get("/list", async (req, res, next) => {

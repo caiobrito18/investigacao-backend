@@ -1,9 +1,5 @@
 {
-  "_id":"mongoId",
-  "innerId":"Number",
-  "file64":"String",
-  "Client":"String",
-  "tags":{
-    "Strings":"Strings"
-  }
+  "originalName": "dumb.pdf",
+  "client": "moltra",
+  "tags": ["termometro", "teste", "nr13"]
 }
