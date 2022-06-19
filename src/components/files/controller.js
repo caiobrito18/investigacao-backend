@@ -8,7 +8,6 @@ const FileModel = conn.model("files", FileSchema);
 
 module.exports = {
   create: function CreateFile(req) {
-    console.log(req);
     const FileDoc = new FileModel({
       filename: req.originalname,
       file64: req.file64,
@@ -24,13 +23,18 @@ module.exports = {
     return fileList;
   },
   fileProvider: async function provide(req) {
-    console.log(req);
-    if (req.tags != undefined) {
+    if (req.tags != undefined && req.client == undefined) {
       const taggedpdf = await FileModel.find({ tags: { $all: req.tags } });
       return taggedpdf;
-    } else {
+    } else if (req.client != undefined && req.tags == undefined) {
       const clientpdf = await FileModel.find({ client: req.client });
       return clientpdf;
+    } else {
+      const bothpdf = await FileModel.find({
+        client: req.client,
+        tags: { $all: req.tags },
+      });
+      return bothpdf;
     }
   },
 };
