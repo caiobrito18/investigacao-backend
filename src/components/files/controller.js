@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const FileSchema = require("./model");
+const crypto = require("crypto");
 
 require("dotenv").config();
 
@@ -8,8 +9,12 @@ const FileModel = conn.model("files", FileSchema);
 
 module.exports = {
   create: function CreateFile(req) {
+    const buf = crypto.randomBytes(8);
+    const hashName = `${buf.toString("hex")}-${req.originalName}`;
+    console.log(hashName);
     const FileDoc = new FileModel({
-      filename: req.originalname,
+      hash: hashName,
+      oname: req.originalName,
       file64: req.file64,
       client: req.client,
       tags: req.tags,
@@ -36,5 +41,11 @@ module.exports = {
       });
       return bothpdf;
     }
+  },
+  delete: async function deleteFiles(req) {
+    const fileList = await FileModel.deleteOne({
+      hash: req.hash,
+    });
+    return fileList;
   },
 };

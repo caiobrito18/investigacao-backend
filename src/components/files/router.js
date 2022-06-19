@@ -25,4 +25,11 @@ router.get("/preview", async (req, res, next) => {
   next();
 });
 
+// Delete file
+router.delete("/delete", async (req, res, next) => {
+  const deleted = await controller.delete(req.body);
+  res.status(201).send(deleted);
+  next();
+});
+
 module.exports = router;
