@@ -20,34 +20,47 @@ router.post(
       key,
       url,
     });
-
-    return res.json(file);
-    // console.log(req.body);
-    // res.status(201).json(req.files);
-    // next();
+    res.status(201).json(file);
   }
 );
 
 // listing
 router.get("/list", async (req, res, next) => {
-  const Files = await controller.list().catch((err) => console.log(err));
+  const Files = await File.find();
   res.status(201).send(Files);
   next();
 });
 
 // Getting file
 router.get("/preview", async (req, res, next) => {
-  const pdffile = await controller
-    .fileProvider(req.body)
-    .catch((err) => console.log(err));
-  res.status(201).send(pdffile);
-  next();
+  const file = req.body;
+  if (file.tags != undefined && file.client == undefined) {
+    const taggedpdf = await File.find({ tags: { $all: file.tags } });
+    res.status(201).send(taggedpdf);
+    next();
+  } else if (file.client != undefined && file.tags == undefined) {
+    const clientpdf = await File.find({ client: file.client });
+    res.status(201).send(clientpdf);
+    next();
+  } else {
+    const bothpdf = await File.find({
+      client: file.client,
+      tags: { $all: file.tags },
+    });
+    res.status(201).send(bothpdf);
+    next();
+  }
 });
 
 // Delete file
 router.delete("/delete", async (req, res, next) => {
-  const deleted = await controller.delete(req.body);
-  res.status(201).send(deleted);
+  const file = req.body;
+  const type = file.type;
+  const value = file.value;
+  const deleted = await File.deleteOne({
+    type: value,
+  });
+  res.status(204).send(deleted);
   next();
 });
 
