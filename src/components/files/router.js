@@ -11,7 +11,7 @@ router.post(
   async (req, res, next) => {
     const { originalname: name, size, key, location: url = "" } = req.file;
     let { client, tags } = req.body;
-    tags = tags.split(" ");
+    tags = tags.split(";");
     const file = await File.create({
       name,
       tags,
