@@ -19,7 +19,7 @@ const FileSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  tags: string,
+  tags: String,
 });
 
 FileSchema.pre("save", function () {
